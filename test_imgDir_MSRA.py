@@ -4,6 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 import xml.dom.minidom
+import cv2
+
 # %matplotlib inline
 def makedirs(dirname):
     try:
@@ -45,6 +47,8 @@ model_weights = caffe_root + 'models/VGGNet/MSRATD500/SSD_300x300/VGG_MSRATD500_
 #scales=((300,300),(700,700),(700,500),(700,300),(1600,1600))
 scales=((700,700),(700,500),(500,700))
 scales=((300,300),)
+rotationAngles = [-45, -30, -20, -15, -10, -5, 0, 5, 10, 15, 20, 30, 45]
+
 # scales=((512, 512),)
 # scales=((500,500),)
 # scales=((500, 500),(700,500),(700,700), (1200,500))
@@ -105,7 +109,12 @@ for i, line in enumerate(test_list):
 	save_detection_path=save_bbs_dir+'res_'+ line[:-3] +'txt'
 	
 	image=caffe.io.load_image(image_name)
-	image_height,image_width,channels=image.shape
+	image_height, image_width, channels = image.shape
+
+	# center = (image_width/2, image_height/2)
+	# M = cv2.getRotationMatrix2D(center,-15,0.95)
+	# image = cv2.warpAffine(image, M, (image_width, image_height))
+
 
 	print '{}:{}:{}'.format(i, image_name, image_height / (image_width + 0.0))
 
@@ -115,6 +124,9 @@ for i, line in enumerate(test_list):
 	# imageNew = sci.imresize(image, scale)
 	plt.imshow(image)
 	currentAxis = plt.gca()
+
+    for rotation in rotationAngles:
+
 
 	for scale in scales:
 		# if scale == (700, 700):

@@ -81,7 +81,8 @@ for ii=1:nImg
     [recall, precision, fscore, evalInfo(ii) ] = evalDetBox03( dtbox, gtbox );
     time = time + toc;
     score = ones(size(bbs_dt,1),1);
-    nms_flag=nms(bbs_dt',score,'overlap',0.25);
+  %  nms_flag=nms(bbs_dt',score,'overlap',0.25);
+  nms_flag = ones(size(bbs_dt,1), 1);
     bbs_dt=bbs_dt(nms_flag==true,:);
     
     dt{ii}=double(bbs_dt);

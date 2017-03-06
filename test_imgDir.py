@@ -58,6 +58,9 @@ model_def2 = caffe_root + 'models/VGGNet/cocoICDAR13SCUT/SSD_300x300/deploy_nola
 model_def = '/dataL/Codes/ssd/models/ssd_cocoICDAR13SCUT/3/512_new4/SSD_512x512/deploy.prototxt'
 model_weights = '/dataL/Codes/ssd/models/ssd_cocoICDAR13SCUT/3/512_new4/SSD_512x512/VGG_cocoICDAR13SCUT_SSD_512x512_iter_110000.caffemodel'
 
+#-----512_new5
+model_def = '/dataL/Codes/ssd/models/ssd_cocoICDAR13SCUT/3/512_new5/SSD_512x512/deploy.prototxt'
+model_weights = '/dataL/Codes/ssd/models/ssd_cocoICDAR13SCUT/3/512_new5/SSD_512x512/VGG_cocoICDAR13SCUT_SSD_512x512_iter_140000.caffemodel'
 
 # model_def = '/dataL/Codes/ssd/models/ssd_cocoICDAR13SCUT/2/512_new/deploy_nolast2.prototxt'
 #model_def = caffe_root + "models/VGGNet/VGG/models/VGGNet/VOC0712/SSD_300x300_ft/deploy.prototxt"
@@ -73,8 +76,8 @@ model_weights = '/dataL/Codes/ssd/models/ssd_cocoICDAR13SCUT/3/512_new4/SSD_512x
 scales=((700,700),(700,500),(500,700))
 #scales=((300,300),(700,700),)
 scales=((512, 512),)
-scales=((500,500),)
-scales=((500, 500),(700,500),(700,700), (1200,500))
+scales=((700,700),)
+#scales=((500, 500),(700,500),(700,700), (1200,500))
 scales=((500, 500),(700,500),(700,700), (700,300)) # best
 
 
@@ -182,7 +185,7 @@ for i, line in enumerate(test_list):
 		det_xmax = detections[0,0,:,5]
 		det_ymax = detections[0,0,:,6]
 
-		top_indices = [i for i, conf in enumerate(det_conf) if conf >= 0.2]
+		top_indices = [i for i, conf in enumerate(det_conf) if conf >= 0.1]
 
 		top_conf = det_conf[top_indices]
 		top_xmin = det_xmin[top_indices]
@@ -213,7 +216,7 @@ for i, line in enumerate(test_list):
 
 	detection_result.close()
 	#plt.show()
-	plt.savefig(save_fig_dir + line)
+	#plt.savefig(save_fig_dir + line)
 #test_list.close()
 print('success')
 
