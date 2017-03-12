@@ -28,13 +28,13 @@ caffe.set_device(0)
 caffe.set_mode_gpu()
 
 #---------model 1:300*300----------
-model_def = caffe_root + 'models/VGGNet/CASIA/SSD_300x300/deploy.prototxt'
-model_weights = caffe_root + 'models/VGGNet/CASIA/SSD_300x300/VGG_CASIA_SSD_300x300_iter_100000.caffemodel'
+# model_def = caffe_root + 'models/VGGNet/MSRAChi/SSD_300x300/deploy.prototxt'
+# model_weights = caffe_root + 'models/VGGNet/MSRAChi/SSD_300x300/VGG_MSRAChi_SSD_300x300_iter_100000.caffemodel'
 
 
 #---------model 2:512*512----------
-model_def = '/dataL/Codes/ssd/models/CASIA/v2_512*512/SSD_512x512/deploy.prototxt'
-model_weights = '/dataL/Codes/ssd/models/CASIA/v2_512*512/SSD_512x512/VGG_CASIA_SSD_512x512_iter_180000.caffemodel'
+model_def = caffe_root + 'models/VGGNet/MSRAChi/SSD_512x512/deploy.prototxt'
+model_weights = caffe_root + 'models/VGGNet/MSRAChi/SSD_512x512/VGG_MSRAChi_SSD_512x512_iter_20000.caffemodel'
 
 # model_def = '/dataL/Codes/ssd/models/ssd_cocoICDAR13SCUT/2/512_new/deploy_nolast2.prototxt'
 #model_def = caffe_root + "models/VGGNet/VGG/models/VGGNet/VOC0712/SSD_300x300_ft/deploy.prototxt"
@@ -92,8 +92,8 @@ print(net.blobs['data'].data.shape)
 
 
 
-dataset_name = 'CASIA'
-img_root = '/home/lili/datasets/CASIA/img/test/'
+dataset_name = 'MSRAChi'
+img_root = '/home/lili/datasets/MSRATD500/img/test/'
 test_list = [os.path.join(img_root, f) for f in os.listdir(img_root) if f.endswith('.jpg')]
 
 save_bbs_dir = caffe_root + 'data/' + dataset_name + '/test_bb/'
@@ -102,7 +102,7 @@ makedirs(save_bbs_dir)
 makedirs(save_fig_dir)
 import scipy.misc as sci
 # ---------------------------quick version----------------------
-
+'''
 for i, line in enumerate(test_list):
 	# if i < 49:
 	# 	continue
@@ -111,7 +111,7 @@ for i, line in enumerate(test_list):
 	line = os.path.basename(line)
 
 	save_detection_path=save_bbs_dir+'res_'+ line[:-3] +'txt'
-	
+
 	image=caffe.io.load_image(image_name)
 	image_height,image_width,channels=image.shape
 
@@ -146,8 +146,8 @@ for i, line in enumerate(test_list):
 		transformer.set_mean('data', np.array([104,117,123])) # mean pixel
 		transformer.set_raw_scale('data', 255)  # the reference model operates on images in [0,255] range instead of [0,1]
 		transformer.set_channel_swap('data', (2,1,0))  # the reference model has channels in BGR order instead of RGB
-		
-		net.blobs['data'].reshape(1,3,image_resize_height,image_resize_width)		
+
+		net.blobs['data'].reshape(1,3,image_resize_height,image_resize_width)
 		transformed_image = transformer.preprocess('data', image)
 		net.blobs['data'].data[...] = transformed_image
 
@@ -172,7 +172,7 @@ for i, line in enumerate(test_list):
 		top_ymax = det_ymax[top_indices]
 
 
-		
+
 		for i in xrange(top_conf.shape[0]):
 			xmin = int(round(top_xmin[i] * image.shape[1]))
 			ymin = int(round(top_ymin[i] * image.shape[0]))
@@ -185,7 +185,7 @@ for i, line in enumerate(test_list):
 			score = top_conf[i]
 			result=str(xmin)+','+str(ymin)+','+str(xmax)+','+str(ymax) +','+str(score) +'\r\n'
 			detection_result.write(result)
-			
+
 			name = '%.2f'%(score)
 			coords = (xmin, ymin), xmax-xmin+1, ymax-ymin+1
 			color = 'b'
@@ -197,8 +197,9 @@ for i, line in enumerate(test_list):
 	#plt.savefig(save_fig_dir + line)
 #test_list.close()
 print('success')
-# ---------------------------show version----------------------
 '''
+# ---------------------------show version----------------------
+''
 for i, line in enumerate(test_list):
 	# if i < 49:
 	# 	continue
@@ -260,7 +261,7 @@ for i, line in enumerate(test_list):
 		det_xmax = detections[0, 0, :, 5]
 		det_ymax = detections[0, 0, :, 6]
 
-		top_indices = [i for i, conf in enumerate(det_conf) if conf >= 0.2]
+		top_indices = [i for i, conf in enumerate(det_conf) if conf >= 0.1]
 
 		top_conf = det_conf[top_indices]
 		top_xmin = det_xmin[top_indices]
@@ -292,5 +293,5 @@ for i, line in enumerate(test_list):
 # plt.savefig(save_fig_dir + line)
 # test_list.close()
 print('success')
-'''
+''
 

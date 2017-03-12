@@ -27,14 +27,40 @@ import caffe
 caffe.set_device(0)
 caffe.set_mode_gpu()
 
-#---------model 1:300*300----------
-model_def = caffe_root + 'models/VGGNet/CASIA/SSD_300x300/deploy.prototxt'
-model_weights = caffe_root + 'models/VGGNet/CASIA/SSD_300x300/VGG_CASIA_SSD_300x300_iter_100000.caffemodel'
+model_def = caffe_root + 'models/VGGNet/VGG/longer_conv_300x300/deploy.prototxt'
+model_weights = caffe_root + 'models/VGGNet/VGG/longer_conv_300x300/VGG_VGG_longer_conv_300x300_iter_5000.caffemodel'
 
+model_def2 = caffe_root + 'models/VGGNet/cocoICDAR13SCUT/SSD_300x300/deploy_nolast2.prototxt'
 
-#---------model 2:512*512----------
-model_def = '/dataL/Codes/ssd/models/CASIA/v2_512*512/SSD_512x512/deploy.prototxt'
-model_weights = '/dataL/Codes/ssd/models/CASIA/v2_512*512/SSD_512x512/VGG_CASIA_SSD_512x512_iter_180000.caffemodel'
+#model_def = caffe_root + 'models/VGGNet/cocoICDAR13SCUT/SSD_300x300/deploy_conv9_2.prototxt'
+# model_def = caffe_root + 'models/VGGNet/cocoICDAR13SCUT/SSD_300x300/deploy.prototxt'
+# model_weights = caffe_root + 'models/VGGNet/cocoICDAR13SCUT/SSD_300x300/VGG_cocoICDAR13SCUT_SSD_300x300_iter_40000.caffemodel'
+
+#model_def = '/home/lili/codes/ssd/deploy.prototxt'
+#model_weights = '/home/lili/codes/ssd/VGG_cocoICDAR13SCUT_SSD_512x512_iter_20000.caffemodel'
+
+#model_def = '/dataL/Codes/ssd/models/ssd_cocoICDAR13SCUT/2/512*512_origin/SSD_512x512/deploy_first1.prototxt'
+#model_weights = '/dataL/Codes/ssd/models/ssd_cocoICDAR13SCUT/2/512*512_origin/SSD_512x512/VGG_cocoICDAR13SCUT_SSD_512x512_iter_80000.caffemodel'
+
+# #-----512_new
+# model_def = '/dataL/Codes/ssd/models/ssd_cocoICDAR13SCUT/2/512_new/deploy.prototxt'
+# model_weights = '/dataL/Codes/ssd/models/ssd_cocoICDAR13SCUT/2/512_new/VGG_cocoICDAR13SCUT_SSD_512x512_iter_100000.caffemodel'
+#
+# #-----512_new2
+# model_def = '/dataL/Codes/ssd/models/ssd_cocoICDAR13SCUT/3/512_new2/SSD_512x512/deploy.prototxt'
+# model_weights ='/dataL/Codes/ssd/models/ssd_cocoICDAR13SCUT/3/512_new2/SSD_512x512/VGG_cocoICDAR13SCUT_SSD_512x512_iter_80000.caffemodel'
+#
+# #-----512_new3
+# model_def = '/dataL/Codes/ssd/models/ssd_cocoICDAR13SCUT/3/512_new3/SSD_512x512/deploy.prototxt'
+# model_weights ='/dataL/Codes/ssd/models/ssd_cocoICDAR13SCUT/3/512_new3/SSD_512x512/VGG_cocoICDAR13SCUT_SSD_512x512_iter_140000.caffemodel'
+
+#-----512_new4
+model_def = '/dataL/Codes/ssd/models/ssd_cocoICDAR13SCUT/3/512_new4/SSD_512x512/deploy.prototxt'
+model_weights = '/dataL/Codes/ssd/models/ssd_cocoICDAR13SCUT/3/512_new4/SSD_512x512/VGG_cocoICDAR13SCUT_SSD_512x512_iter_110000.caffemodel'
+
+#-----512_new5
+# model_def = '/dataL/Codes/ssd/models/ssd_cocoICDAR13SCUT/3/512_new5/SSD_512x512/deploy.prototxt'
+# model_weights = '/dataL/Codes/ssd/models/ssd_cocoICDAR13SCUT/3/512_new5/SSD_512x512/VGG_cocoICDAR13SCUT_SSD_512x512_iter_140000.caffemodel'
 
 # model_def = '/dataL/Codes/ssd/models/ssd_cocoICDAR13SCUT/2/512_new/deploy_nolast2.prototxt'
 #model_def = caffe_root + "models/VGGNet/VGG/models/VGGNet/VOC0712/SSD_300x300_ft/deploy.prototxt"
@@ -48,14 +74,12 @@ model_weights = '/dataL/Codes/ssd/models/CASIA/v2_512*512/SSD_512x512/VGG_CASIA_
 
 #scales=((300,300),(700,700),(700,500),(700,300),(1600,1600))
 scales=((700,700),(700,500),(500,700))
-scales=((300,300),)
-# scales=((700,700),)
+#scales=((300,300),(700,700),)
 scales=((512, 512),)
-# scales=((500,500),)
-# # scales=((500, 500),(700,500),(700,700), (1200,500))
-#scales=((500, 500),(700,500),(700,700), (700,300)) # 500 best
-#scales=((300, 300),(700,300),(700,700), (700,500)) # 300 best
-#
+#scales=((700,700),)
+#scales=((500, 500),(700,500),(700,700), (1200,500))
+#scales=((500, 500),(700,500),(700,700), (700,300)) # best
+
 
 #scales=((500,700),)
 # scales=((1200, 1200),)
@@ -92,8 +116,8 @@ print(net.blobs['data'].data.shape)
 
 
 
-dataset_name = 'CASIA'
-img_root = '/home/lili/datasets/CASIA/img/test/'
+dataset_name = 'USTB'
+img_root = '/dataL/datasets/USTB/USTB-SV1K_V1/testing/'
 test_list = [os.path.join(img_root, f) for f in os.listdir(img_root) if f.endswith('.jpg')]
 
 save_bbs_dir = caffe_root + 'data/' + dataset_name + '/test_bb/'
@@ -101,8 +125,6 @@ save_fig_dir = caffe_root + 'data/' + dataset_name + '/vis_fig/'
 makedirs(save_bbs_dir)
 makedirs(save_fig_dir)
 import scipy.misc as sci
-# ---------------------------quick version----------------------
-
 for i, line in enumerate(test_list):
 	# if i < 49:
 	# 	continue
@@ -118,11 +140,11 @@ for i, line in enumerate(test_list):
 	print '{}:{}:{}'.format(i, image_name, image_height / (image_width + 0.0))
 
 	detection_result=open(save_detection_path,'wt')
-	#plt.clf()
+	plt.clf()
 
 	# imageNew = sci.imresize(image, scale)
-	#plt.imshow(image)
-	#currentAxis = plt.gca()
+	plt.imshow(image)
+	currentAxis = plt.gca()
 
 	for scale in scales:
 		# if scale == (700, 700):
@@ -163,7 +185,7 @@ for i, line in enumerate(test_list):
 		det_xmax = detections[0,0,:,5]
 		det_ymax = detections[0,0,:,6]
 
-		top_indices = [i for i, conf in enumerate(det_conf) if conf >= 0.1]
+		top_indices = [i for i, conf in enumerate(det_conf) if conf >= 0.3]
 
 		top_conf = det_conf[top_indices]
 		top_xmin = det_xmin[top_indices]
@@ -189,108 +211,12 @@ for i, line in enumerate(test_list):
 			name = '%.2f'%(score)
 			coords = (xmin, ymin), xmax-xmin+1, ymax-ymin+1
 			color = 'b'
-			#currentAxis.add_patch(plt.Rectangle(*coords, fill=False, edgecolor=color, linewidth=2))
-			#currentAxis.text(xmin, ymin, name, bbox={'facecolor':'white', 'alpha':0.5})
+			currentAxis.add_patch(plt.Rectangle(*coords, fill=False, edgecolor=color, linewidth=2))
+			currentAxis.text(xmin, ymin, name, bbox={'facecolor':'white', 'alpha':0.5})
 
 	detection_result.close()
 	#plt.show()
-	#plt.savefig(save_fig_dir + line)
+	plt.savefig(save_fig_dir + line)
 #test_list.close()
 print('success')
-# ---------------------------show version----------------------
-'''
-for i, line in enumerate(test_list):
-	# if i < 49:
-	# 	continue
-	line = line.strip()
-	image_name = line
-	line = os.path.basename(line)
-
-	save_detection_path = save_bbs_dir + 'res_' + line[:-3] + 'txt'
-
-	image = caffe.io.load_image(image_name)
-	image_height, image_width, channels = image.shape
-
-	print '{}:{}:{}'.format(i, image_name, image_height / (image_width + 0.0))
-
-	detection_result = open(save_detection_path, 'wt')
-	plt.clf()
-
-	# imageNew = sci.imresize(image, scale)
-	plt.imshow(image)
-	currentAxis = plt.gca()
-
-	for scale in scales:
-		# if scale == (700, 700):
-		# 	net = net2
-		image_resize_height = scale[0]
-		image_resize_width = scale[1]
-		# #---------fix width: max(H, 300), 500
-		# image_resize_height = max( 300, int((image_height + 0.0) / image_width * scale[1]) )
-		# ---------fix height: 500, min(W, 1200)
-		# image_resize_width = max( 300, min(1200, int((image_width + 0.0) / image_height * scale[0])) )
-		print('height = {}, width = {}'.format(image_resize_height, image_resize_width))
-
-		# if image_height < image_width:
-		# 	image_resize_height = scale[0]
-		# 	image_resize_width = int((image_width + 0.0) / image_height * scale[0])
-		# else:
-		# 	image_resize_width = scale[0]
-		# 	image_resize_height = int((image_height + 0.0) / image_width * scale[0])
-		transformer = caffe.io.Transformer({'data': (1, 3, image_resize_height, image_resize_width)})
-		transformer.set_transpose('data', (2, 0, 1))
-		transformer.set_mean('data', np.array([104, 117, 123]))  # mean pixel
-		transformer.set_raw_scale('data',
-								  255)  # the reference model operates on images in [0,255] range instead of [0,1]
-		transformer.set_channel_swap('data', (2, 1, 0))  # the reference model has channels in BGR order instead of RGB
-
-		net.blobs['data'].reshape(1, 3, image_resize_height, image_resize_width)
-		transformed_image = transformer.preprocess('data', image)
-		net.blobs['data'].data[...] = transformed_image
-
-		# Forward pass.
-		result = net.forward()
-		detections = net.forward()['detection_out']
-
-		# Parse the outputs.
-		det_label = detections[0, 0, :, 1]
-		det_conf = detections[0, 0, :, 2]
-		det_xmin = detections[0, 0, :, 3]
-		det_ymin = detections[0, 0, :, 4]
-		det_xmax = detections[0, 0, :, 5]
-		det_ymax = detections[0, 0, :, 6]
-
-		top_indices = [i for i, conf in enumerate(det_conf) if conf >= 0.2]
-
-		top_conf = det_conf[top_indices]
-		top_xmin = det_xmin[top_indices]
-		top_ymin = det_ymin[top_indices]
-		top_xmax = det_xmax[top_indices]
-		top_ymax = det_ymax[top_indices]
-
-		for i in xrange(top_conf.shape[0]):
-			xmin = int(round(top_xmin[i] * image.shape[1]))
-			ymin = int(round(top_ymin[i] * image.shape[0]))
-			xmax = int(round(top_xmax[i] * image.shape[1]))
-			ymax = int(round(top_ymax[i] * image.shape[0]))
-			xmin = max(1, xmin)
-			ymin = max(1, ymin)
-			xmax = min(image.shape[1] - 1, xmax)
-			ymax = min(image.shape[0] - 1, ymax)
-			score = top_conf[i]
-			result = str(xmin) + ',' + str(ymin) + ',' + str(xmax) + ',' + str(ymax) + ',' + str(score) + '\r\n'
-			detection_result.write(result)
-
-			name = '%.2f' % (score)
-			coords = (xmin, ymin), xmax - xmin + 1, ymax - ymin + 1
-			color = 'b'
-			currentAxis.add_patch(plt.Rectangle(*coords, fill=False, edgecolor=color, linewidth=2))
-			currentAxis.text(xmin, ymin, name, bbox={'facecolor': 'white', 'alpha': 0.5})
-
-	detection_result.close()
-# plt.show()
-# plt.savefig(save_fig_dir + line)
-# test_list.close()
-print('success')
-'''
 

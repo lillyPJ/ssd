@@ -12,5 +12,5 @@ box = bbNms(box,'type','cover','overlap', overlap1Threshold);
 if ~isempty(box)
     box = box((box(:,5)> scoreThreshold),:);
     box = bbNms(box,'type','maxg','overlap', overlap2Threshold);
-    box = box(:,1:4);
+    %box = box(:,1:4);
 end

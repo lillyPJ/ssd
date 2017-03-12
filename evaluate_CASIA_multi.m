@@ -60,9 +60,9 @@ for ii=1:nImg
 %      dtbox = bbNms(dtbox,'type','maxg','overlap', 0.25);
 %      %dtbox = bbNms(dtbox,'type','maxg','overlap', 0.4, 'ovrDnm', 'min');
 %      %dtbox = bbNms(dtbox,'type','max','overlap', 0.6, 'ovrDnm', 'min');
-%      if ~isempty(dtbox)
-%          dtbox = dtbox(:,1:4);
-%      end
+     if ~isempty(dtbox)
+         dtbox = dtbox(:,1:4);
+     end
     %%
 %     if ~isempty(dtbox)
 %         h_w = dtbox(:,4)./dtbox(:,3);
